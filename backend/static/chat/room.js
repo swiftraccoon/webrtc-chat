@@ -22,6 +22,26 @@ var chatSocket = new WebSocket(
     'ws://' + window.location.host +
     '/ws/chat/' + roomName + '/');
 
+// Error handling
+peerConnection.oniceconnectionstatechange = function(event) {
+    if (peerConnection.iceConnectionState === 'failed') {
+        console.error('ICE connection failed.');
+    }
+};
+
+// UI Enhancements
+document.getElementById('muteAudio').onclick = function() {
+    // Mute audio logic here
+};
+
+document.getElementById('pauseVideo').onclick = function() {
+    // Pause video logic here
+};
+
+document.getElementById('endCall').onclick = function() {
+    // End call logic here
+};
+
 // Handle WebRTC signaling
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
