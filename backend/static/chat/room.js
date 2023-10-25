@@ -2,6 +2,20 @@
 const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
 const peerConnection = new RTCPeerConnection(configuration);
 
+// Capture local media
+navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+    const localVideo = document.getElementById('localVideo');
+    localVideo.srcObject = stream;
+
+    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+});
+
+// Handle remote streams
+peerConnection.ontrack = function(event) {
+    const remoteVideo = document.getElementById('remoteVideo');
+    remoteVideo.srcObject = event.streams[0];
+};
+
 var roomName = JSON.parse(document.getElementById('room-name').textContent);
 
 var chatSocket = new WebSocket(
