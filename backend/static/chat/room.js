@@ -1,12 +1,38 @@
+// WebRTC Configuration
+const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+const peerConnection = new RTCPeerConnection(configuration);
+
 var roomName = JSON.parse(document.getElementById('room-name').textContent);
 
 var chatSocket = new WebSocket(
     'ws://' + window.location.host +
     '/ws/chat/' + roomName + '/');
 
+// Handle WebRTC signaling
 chatSocket.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-    document.querySelector('#chat-log').value += (data.message + '\n');
+    const data = JSON.parse(e.data);
+
+    if (data.message_type === 'WEBRTC_SIGNAL') {
+        const signal = JSON.parse(data.message);
+        if (signal.offer) {
+            peerConnection.setRemoteDescription(new RTCSessionDescription(signal.offer)).then(() => {
+                return peerConnection.createAnswer();
+            }).then(answer => {
+                return peerConnection.setLocalDescription(answer);
+            }).then(() => {
+                chatSocket.send(JSON.stringify({
+                    'message_type': 'WEBRTC_SIGNAL',
+                    'message': JSON.stringify({ 'answer': peerConnection.localDescription })
+                }));
+            });
+        } else if (signal.answer) {
+            peerConnection.setRemoteDescription(new RTCSessionDescription(signal.answer));
+        } else if (signal.iceCandidate) {
+            peerConnection.addIceCandidate(new RTCIceCandidate(signal.iceCandidate));
+        }
+    } else {
+        document.querySelector('#chat-log').value += (data.message + '\n');
+    }
 };
 
 chatSocket.onclose = function(e) {

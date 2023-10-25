@@ -22,19 +22,31 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    # Receive message from WebSocket
     async def receive(self, text_data):
+        """
+        Receive message from WebSocket
+        """
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        message_type = text_data_json.get('message_type', None)
 
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
+        if message_type == 'WEBRTC_SIGNAL':
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'webrtc_signal',
+                    'message_type': 'WEBRTC_SIGNAL',
+                    'message': text_data_json['message']
+                }
+            )
+        else:
+            message = text_data_json['message']
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': message
+                }
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
@@ -42,5 +54,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'message': message
+        }))
+
+    async def webrtc_signal(self, event):
+        """
+        This method will handle WebRTC signaling messages.
+        """
+        message_type = event['message_type']
+        message = event['message']
+
+        await self.send(text_data=json.dumps({
+            'message_type': message_type,
             'message': message
         }))
