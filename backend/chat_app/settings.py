@@ -20,3 +20,4 @@ DEBUG = False
 
 # Add your server's IP or domain name
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+print("Settings loaded: ", ALLOWED_HOSTS)
