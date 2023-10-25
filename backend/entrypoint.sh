@@ -28,4 +28,5 @@ echo "Debug: About to start Django directly..."
 python manage.py runserver 0.0.0.0:8001 --verbosity 3 || (echo "Debug: Django failed to start" && exit 1)
 
 # Keep the script running
-tail -f /dev/null
+while :; do sleep 1; done
+
