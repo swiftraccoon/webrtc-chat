@@ -31,15 +31,20 @@ peerConnection.oniceconnectionstatechange = function(event) {
 
 // UI Enhancements
 document.getElementById('muteAudio').onclick = function() {
-    // Mute audio logic here
+    // Toggle audio mute
+    const audioTracks = localStream.getAudioTracks();
+    audioTracks[0].enabled = !audioTracks[0].enabled;
 };
 
 document.getElementById('pauseVideo').onclick = function() {
-    // Pause video logic here
+    // Toggle video pause
+    const videoTracks = localStream.getVideoTracks();
+    videoTracks[0].enabled = !videoTracks[0].enabled;
 };
 
 document.getElementById('endCall').onclick = function() {
-    // End call logic here
+    // End the call
+    peerConnection.close();
 };
 
 // Handle WebRTC signaling

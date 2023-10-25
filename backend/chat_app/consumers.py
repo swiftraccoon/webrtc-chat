@@ -1,6 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-import asyncio
+import logging
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -40,7 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     self.room_group_name, {"type": "chat_message", "message": message}
                 )
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logging.error(f"An error occurred: {e}")
 
     # Receive message from room group
     async def chat_message(self, event):
