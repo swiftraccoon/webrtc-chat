@@ -15,4 +15,5 @@ application = ProtocolTypeRouter(
     }
 )
 
-print("ASGI application initialized.")
+# Added debugging statement
+print("Debug: ASGI application initialized.")

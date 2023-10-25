@@ -6,6 +6,6 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
   frontend:
     build: ./frontend
-    command: npm start  # or your actual command to start the frontend
+    command: npm start # or your actual command to start the frontend
     volumes:
       - ./frontend:/app

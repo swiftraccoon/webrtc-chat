@@ -6,8 +6,11 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_app.settings')
-    print("DJANGO_SETTINGS_MODULE: ", os.environ.get('DJANGO_SETTINGS_MODULE'))
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chat_app.settings")
+
+    # Added debugging statement
+    print(f"Debug: DJANGO_SETTINGS_MODULE = {os.environ.get('DJANGO_SETTINGS_MODULE')}")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -19,5 +22,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
