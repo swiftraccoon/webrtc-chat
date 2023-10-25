@@ -13,4 +13,11 @@ RUN echo "Debug: Backend Dockerfile executed."
 
 COPY . .
 
+# Copy entrypoint script into the image
+COPY entrypoint.sh /entrypoint.sh
+
+# Set the entry point
+ENTRYPOINT ["/entrypoint.sh"]
+
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
