@@ -29,6 +29,15 @@ peerConnection.oniceconnectionstatechange = function(event) {
     }
 };
 
+// Fetch list of users in the room from the backend
+function fetchUserList() {
+    // AJAX call to backend to fetch user list
+    // Update the 'userListItems' element with the fetched list
+}
+
+// Call fetchUserList at regular intervals
+setInterval(fetchUserList, 5000);
+
 // UI Enhancements
 document.getElementById('muteAudio').onclick = function() {
     // Toggle audio mute
