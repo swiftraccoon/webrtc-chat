@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('roomForm');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
         const roomName = document.getElementById('roomName').value;
 
@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: JSON.stringify({ room_name: roomName })
         }).then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Redirect to the room
-            }
-        });
+            .then(data => {
+                if (data.status === 'success') {
+                    // Redirect to the room
+                }
+            });
     });
 });

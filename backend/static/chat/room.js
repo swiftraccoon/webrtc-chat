@@ -11,7 +11,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream =>
 });
 
 // Handle remote streams
-peerConnection.ontrack = function(event) {
+peerConnection.ontrack = function (event) {
     const remoteVideo = document.getElementById('remoteVideo');
     remoteVideo.srcObject = event.streams[0];
 };
@@ -23,7 +23,7 @@ var chatSocket = new WebSocket(
     '/ws/chat/' + roomName + '/');
 
 // Error handling
-peerConnection.oniceconnectionstatechange = function(event) {
+peerConnection.oniceconnectionstatechange = function (event) {
     if (peerConnection.iceConnectionState === 'failed') {
         console.error('ICE connection failed.');
     }
@@ -36,36 +36,36 @@ function fetchUserList() {
         method: 'POST',
         body: JSON.stringify({ room_name: roomName })
     }).then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // Update the 'userListItems' element with the fetched list
-        }
-    });
+        .then(data => {
+            if (data.status === 'success') {
+                // Update the 'userListItems' element with the fetched list
+            }
+        });
 }
 
 // Call fetchUserList at regular intervals
 setInterval(fetchUserList, 5000);
 
 // UI Enhancements
-document.getElementById('muteAudio').onclick = function() {
+document.getElementById('muteAudio').onclick = function () {
     // Toggle audio mute
     const audioTracks = localStream.getAudioTracks();
     audioTracks[0].enabled = !audioTracks[0].enabled;
 };
 
-document.getElementById('pauseVideo').onclick = function() {
+document.getElementById('pauseVideo').onclick = function () {
     // Toggle video pause
     const videoTracks = localStream.getVideoTracks();
     videoTracks[0].enabled = !videoTracks[0].enabled;
 };
 
-document.getElementById('endCall').onclick = function() {
+document.getElementById('endCall').onclick = function () {
     // End the call
     peerConnection.close();
 };
 
 // Handle WebRTC signaling
-chatSocket.onmessage = function(e) {
+chatSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
 
     if (data.message_type === 'WEBRTC_SIGNAL') {
@@ -91,18 +91,18 @@ chatSocket.onmessage = function(e) {
     }
 };
 
-chatSocket.onclose = function(e) {
+chatSocket.onclose = function (e) {
     console.error('Chat socket closed unexpectedly');
 };
 
 document.querySelector('#chat-message-input').focus();
-document.querySelector('#chat-message-input').onkeyup = function(e) {
+document.querySelector('#chat-message-input').onkeyup = function (e) {
     if (e.keyCode === 13) {  // Enter key
         document.querySelector('#chat-message-submit').click();
     }
 };
 
-document.querySelector('#chat-message-submit').onclick = function(e) {
+document.querySelector('#chat-message-submit').onclick = function (e) {
     var messageInputDom = document.querySelector('#chat-message-input');
     var message = messageInputDom.value;
     chatSocket.send(JSON.stringify({
