@@ -32,7 +32,15 @@ peerConnection.oniceconnectionstatechange = function(event) {
 // Fetch list of users in the room from the backend
 function fetchUserList() {
     // AJAX call to backend to fetch user list
-    // Update the 'userListItems' element with the fetched list
+    fetch('/get_chat_history/', {
+        method: 'POST',
+        body: JSON.stringify({ room_name: roomName })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Update the 'userListItems' element with the fetched list
+        }
+    });
 }
 
 // Call fetchUserList at regular intervals
